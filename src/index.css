@@ -1,0 +1,84 @@
+:root {
+  --background-color: #1B1C3C;
+  --buttons-color: #5f4d93;
+  --linear-gradient-button-color: linear-gradient(180deg, #FF66B2, #5F4B8B);
+  --background-gradient-color: linear-gradient(135deg, #111125, #382872);
+  --text-color: whitesmoke;
+}
+
+html, body {
+  min-height: 100%;
+  margin: 0;
+  font-family:Georgia, 'Times New Roman', Times, serif
+}
+
+body {
+  box-sizing: border-box;
+  background: var(--background-gradient-color);
+  color: whitesmoke;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+  align-items: center;
+}
+
+.logo {
+  width: 250px;
+  height: 200px;
+}
+
+.game-rules {
+  padding-left: 30px;
+}
+
+.game-rules-button {
+  border-radius: 10px;
+  color: var(--text-color);
+  background: var(--linear-gradient-button-color);
+}
+
+.game-rules h2 {
+ font-size: 16px;
+ font-weight: bold;
+}
+
+.game-rules p {
+  font-size: 12px;
+}
+
+.category-page {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.back-to-home-button {
+  background: var(--linear-gradient-button-color);
+  width: 40px;
+  height: 40px;
+  border-radius: 80px;
+  position: relative;
+}
+
+.back-to-home-button i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.categories {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
