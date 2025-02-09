@@ -1,16 +1,15 @@
-export const GameData = () => {
+type gameDataType = {
+  category: string;
+  words: string[];
+}
+
+export const GameData = (): gameDataType[] => {
     return [
-        {category: "Miasta",
-          words: ["Londyn", "Barcelona", "Berlin", "Ankara", "Madryt", "Waszyngton"]
+        {category: "MIASTA",
+          words: ["BERLIN", "LONDYN", "BRUKSELA", "PARYŻ", "KOPENHAGA", "HELSINKI", "DUBLIN", "AMSTERDAM", "WARSZAWA", "ATENY" ]
         },
-        {category: "Zwierzęta",
-          words: ["Jeżozwierz", "Papuga", "Ślimak", "Hipopotam"]
-        },
-        {category: "Niespodzianki",
-          words: ["Abstrakcjonizm", "Ekstrawagancja", "Reumatologia", "Klaustrofobia", "Kwintesencja", "dźwiękonaśladownictwo", "pięćdziesięciogroszówka", " luminescencja"]
-        },
-        {category: "Miasta",
-          words: ["Londyn", "Paryż", "Berlin"]
+        {category: "ZWIERZĘTA",
+          words: ["PAPUGA", "ŚLIMAK", "HIPOPOTAM", "SURYKATKA", "CHOMIK", "REKIN"]
         },
     ]
 }

@@ -12,8 +12,7 @@ export const HowToPlay = () => {
                     <li>Jeśli podana litera znajduje się w słowie, zostanie odsłonięta we właściwych miejscach.</li>
                     <li>Jeśli litera nie występuje w słowie, tracisz jedno życie.</li>
                     <li>Masz 6 żyć. Każda błędna litera to jedno stracone życie. Gdy wykorzystasz wszystkie - przegrywasz.</li>
-                    <li>Możesz próbować odgadnąć całe słowo w dowolnym momencie, ale jeśli się pomylisz, tracisz życie.</li>
-                    <li>Gra kończy się natychmiast po odgadnięciu słowa lub utracie wszystkich żyć.</li>
+                    <li>Gra kończy się po odgadnięciu słowa lub utracie wszystkich żyć.</li>
                 </ul>
             </p>
             <p><strong>Wygrywasz</strong>, jeśli odkryjesz całe słowo przed utratą wszystkich żyć. <strong>Przegrywasz</strong>, jeśli stracisz wszystkie życia przed odgadnięciem słowa.</p>
