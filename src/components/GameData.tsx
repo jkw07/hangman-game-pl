@@ -11,5 +11,11 @@ export const GameData = (): gameDataType[] => {
         {category: "ZWIERZĘTA",
           words: ["PAPUGA", "ŚLIMAK", "HIPOPOTAM", "SURYKATKA", "CHOMIK", "REKIN"]
         },
+        {category: "PAŃSTWA",
+          words: ["POLSKA", "DANIA", "HISZPANIA", "PORTUGALIA", "SZWECJA", "FINLANDIA", "BRAZYLIA", 'PERU', "CHILE", "PARAGWAJ", "KOSTARYKA"]
+        },
+        {category: "STANY ZJEDNOCZONE",
+          words: ["ARIZONA", "TEKSAS", "MISSOURI", "INDIANA", "PENSYLWANIA", "VERMONT", "OREGON", 'WASZYNGTON', "NEVADA", "MONTANA", "IDAHO"]
+        },
     ]
 }

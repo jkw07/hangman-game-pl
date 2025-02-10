@@ -38,7 +38,7 @@ export const GameBoard = () => {
                     <i onClick={goToHomePage} className="fa-solid fa-arrow-rotate-left fa-xl" style={{ color: 'whitesmoke'}}></i>
                 </div>
                 <img src={logo} className="logo" alt="logo"></img>
-                <LivesCounter maxLives={maxLives} livesLeft={livesLeft}/>
+                <LivesCounter livesLeft={livesLeft}/>
             </div>
             <p>KATEGORIA: <strong>{category}</strong></p>
             <div className='selected-word'>
