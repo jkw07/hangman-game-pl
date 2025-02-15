@@ -7,7 +7,7 @@ type gameDataType = {
 }
 
 export const PickCategoryButton = () => {
-    const gameData: gameDataType[] = GameData();
+    const gameData: gameDataType[] = GameData;
     const navigate = useNavigate();
     const categories: string[] = gameData.map(item => item.category);
     const handleCategoryClick = (category: string) => {
@@ -17,7 +17,7 @@ export const PickCategoryButton = () => {
   return (
     <>
       {categories.map((category, index) => (
-        <button key={index} value={category} onClick={() => handleCategoryClick(category)}>
+        <button className='blue-button' key={index} value={category} onClick={() => handleCategoryClick(category)}>
           {category}
         </button>
       ))}

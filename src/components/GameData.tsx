@@ -1,10 +1,11 @@
-type gameDataType = {
+export const letters: string[] = ["A","Ą","B","C","Ć","D","E","Ę","F","G","H","I","J","K","L","Ł","M","N","Ń","O","Ó","P","Q","R","S","Ś","T","U","V","W","X","Y","Z","Ź","Ż"];
+
+export type gameDataType = {
   category: string;
   words: string[];
 }
 
-export const GameData = (): gameDataType[] => {
-    return [
+export const GameData: gameDataType[] = [
         {category: "MIASTA",
           words: ["BERLIN", "LONDYN", "BRUKSELA", "PARYŻ", "KOPENHAGA", "HELSINKI", "DUBLIN", "AMSTERDAM", "WARSZAWA", "ATENY" ]
         },
@@ -18,4 +19,3 @@ export const GameData = (): gameDataType[] => {
           words: ["ARIZONA", "TEKSAS", "MISSOURI", "INDIANA", "PENSYLWANIA", "VERMONT", "OREGON", 'WASZYNGTON', "NEVADA", "MONTANA", "IDAHO"]
         },
     ]
-}

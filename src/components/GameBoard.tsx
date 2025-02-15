@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { useLocation } from "react-router-dom";
 import { GameData } from "./GameData"; 
@@ -7,14 +7,31 @@ import { LetterButtons } from "./LetterButtons";
 import { SelectedWord } from "./SelectedWord";
 import { useGameLogic } from "./GameLogic";
 import { LivesCounter} from "./LivesCounter";
-import logo from '../assets/logo.png'
-
-type gameDataType = {
-  category: string;
-  words: string[];
-}
+import { Paused } from "./Paused";
+import logo from '../assets/images/logo.svg'
+import menu from '../assets/images/icon-menu.svg'
 
 export const GameBoard = () => {
+    const [isPaused, setIsPaused] = useState(false);
+    const handlePause = () => {
+        setIsPaused(true);
+    };
+
+    const handleContinue = () => {
+        setIsPaused(false);
+    };
+
+    useEffect(() => {
+        const pageContainer = document.querySelector('.page-container');
+        if (pageContainer) {
+            if (isPaused) {
+                pageContainer.classList.add("blurred");
+            } else {
+                pageContainer.classList.remove("blurred");
+            }
+        }
+    }, [isPaused]);
+
     const navigate = useNavigate();
     const goToHomePage = () => {
     navigate('/');
@@ -22,8 +39,7 @@ export const GameBoard = () => {
     const location = useLocation();
     const category = location.state?.category as string;
 
-    const gameData: gameDataType[] = GameData();
-    const selectedCategory = gameData.find(item => item.category === category);
+    const selectedCategory = GameData.find(item => item.category === category);
     const wordsArray = selectedCategory ? selectedCategory.words : [];
     const [selectedWord] = useState<string>(() =>
     wordsArray.length > 0 ? wordsArray[Math.floor(Math.random() * wordsArray.length)] : ""); 
@@ -32,24 +48,24 @@ export const GameBoard = () => {
     const { livesLeft, guessedLetters, gameStatus, handleLetterClick } = useGameLogic(selectedWord, maxLives);
 
     return (
-        <div className="game-board">
-            <div className="game-status">
-                <div className="back-to-home-button">
-                    <i onClick={goToHomePage} className="fa-solid fa-arrow-rotate-left fa-xl" style={{ color: 'whitesmoke'}}></i>
-                </div>
-                <img src={logo} className="logo" alt="logo"></img>
-                <LivesCounter livesLeft={livesLeft}/>
-            </div>
-            <p>KATEGORIA: <strong>{category}</strong></p>
-            <div className='selected-word'>
-                <SelectedWord word={selectedWord} guessedLetters={guessedLetters} />
-            </div>
-            {gameStatus !== "playing" && (
-            <button onClick={goToHomePage}>
-            {gameStatus === "won" ? "Wygrałeś! :-) Zagraj ponownie" : "Przegrałeś! :-( Spróbuj ponownie"}
-            </button>
-            )}
-            {gameStatus === "playing" && <div className="letters"><LetterButtons onLetterClick={handleLetterClick} guessedLetters={guessedLetters}/></div>}
+        <>
+        {isPaused && <Paused onContinue={handleContinue} />}
+        <div className="page-container">
+            <div className="header">
+                <button onClick={handlePause} className="return-button"><img src={menu} alt="menu button"></img></button>
+                <h2>Kategoria: {category}</h2>
         </div>
+        <LivesCounter livesLeft={livesLeft}/>
+        <div className='selected-word'>
+            <SelectedWord word={selectedWord} guessedLetters={guessedLetters} />
+        </div>
+        {gameStatus !== "playing" && (
+        <button onClick={goToHomePage}>
+            {gameStatus === "won" ? "Wygrałeś! :-) Zagraj ponownie" : "Przegrałeś! :-( Spróbuj ponownie"}
+        </button>
+        )}
+        {gameStatus === "playing" && <div className="letters"><LetterButtons onLetterClick={handleLetterClick} guessedLetters={guessedLetters}/></div>}
+        </div>
+    </>
     );
 };

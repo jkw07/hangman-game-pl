@@ -1,10 +1,20 @@
-
+import { useNavigate } from 'react-router-dom';
+import returnIcon from '../assets/images/icon-back.svg';
 
 export const HowToPlay = () => {
+    const navigate = useNavigate();
+    const goToHomePage = () => {
+    navigate('/');
+    };
     return (
-        <div className="game-rules">
+        <>
+        <div className="page-container">
+            <div className="header">
+                <button onClick={goToHomePage} className="return-button"><img src={returnIcon} alt="return button"></img></button>
             <h2>Zasady gry</h2>
-            <p>Cel gry: Twoim zadaniem jest odgadnięcie ukrytego słowa, zanim stracisz wszystkie życia.</p>
+            </div>
+            <div className="game-rules-container">
+                <p>Cel gry: Twoim zadaniem jest odgadnięcie ukrytego słowa, zanim stracisz wszystkie życia.</p>
             <p>Rozgrywka:
                 <ul>
                     <li>Gra losuje tajne słowo i ukrywa je pod podkreśleniami (_ _ _ _).</li>
@@ -16,5 +26,8 @@ export const HowToPlay = () => {
                 </ul>
             </p>
             <p><strong>Wygrywasz</strong>, jeśli odkryjesz całe słowo przed utratą wszystkich żyć. <strong>Przegrywasz</strong>, jeśli stracisz wszystkie życia przed odgadnięciem słowa.</p>
-        </div>)
+            </div>
+        </div>
+    </>
+    )
 };

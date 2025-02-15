@@ -1,30 +1,27 @@
-import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
-import {HowToPlay} from './HowToPlay'
-
-import logo from '../assets/logo.png'
+import logo from '../assets/images/logo.svg'
+import play from '../assets/images/icon-play.svg'
 
 export const HomePage = () => {
-    const [gameRules, setGameRules] = useState<boolean>(false);
     const navigate = useNavigate();
-    const goToNextPage = () => {
+    const goToCategoriesPage = () => {
     navigate('/CategoryPage');
     };
-    const handleToggleGameRules = () => {
-        setGameRules(prevState => !prevState)
-    }
+    const goToRulesPage = () => {
+    navigate('/HowToPlay');
+    };
     return (
         <>
-            <header className="header">
-                <img src={logo} className="logo" alt="logo"></img>
-                <i onClick={goToNextPage}
-                className="fa-solid fa-circle-play fa-rotate-by fa-2xl play-button"
-                style={{ color: '#FF66B2', transform: 'rotate(-10deg)' }}
-                />
-                <button className="game-rules-button" onClick={handleToggleGameRules}>{gameRules ? "Ukryj" : 'Pokaż'} zasady gry</button>
+            <header className="home-page">
+                <div className="logo">
+                    <img src={logo} alt="Hangman Logo"></img>
+                </div>
+                <div className="container">
+                    <button onClick={goToCategoriesPage} className="play-button"><img src={play} alt="play button"></img></button>
+                    <button className="blue-button" onClick={goToRulesPage}>Zasady gry</button>
+                </div>
             </header>
-            {gameRules && <HowToPlay />}
         </>
     );
 }
