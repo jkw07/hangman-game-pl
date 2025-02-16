@@ -8,10 +8,12 @@ import { SelectedWord } from "./SelectedWord";
 import { useGameLogic } from "./GameLogic";
 import { Paused } from "./Paused";
 import { HealthBar } from "./HealthBar";
+import { EndGame } from "./EndGame";
 import menu from '../assets/images/icon-menu.svg';
 
 export const GameBoard = () => {
     const [isPaused, setIsPaused] = useState(false);
+    const [hasEnded, setHasEnded] = useState(false);
     const handlePause = () => {
         setIsPaused(true);
     };
@@ -20,21 +22,6 @@ export const GameBoard = () => {
         setIsPaused(false);
     };
 
-    useEffect(() => {
-        const pageContainer = document.querySelector('.page-container');
-        if (pageContainer) {
-            if (isPaused) {
-                pageContainer.classList.add("blurred");
-            } else {
-                pageContainer.classList.remove("blurred");
-            }
-        }
-    }, [isPaused]);
-
-    const navigate = useNavigate();
-    const goToHomePage = () => {
-    navigate('/');
-    };
     const location = useLocation();
     const category = location.state?.category as string;
 
@@ -46,24 +33,39 @@ export const GameBoard = () => {
     const maxLives = 6;
     const { livesLeft, guessedLetters, gameStatus, handleLetterClick } = useGameLogic(selectedWord, maxLives);
 
+    useEffect(() => {
+        if (gameStatus !== "playing") {
+            setHasEnded(true);
+        }
+    }, [gameStatus]);
+
+    useEffect(() => {
+        const pageContainer = document.querySelector('.page-container');
+        if (pageContainer) {
+            if (isPaused || hasEnded) {
+                pageContainer.classList.add("blurred");
+            } else {
+                pageContainer.classList.remove("blurred");
+            }
+        }
+    }, [isPaused, hasEnded]);
+
     return (
         <>
         {isPaused && <Paused onContinue={handleContinue} />}
-        <div className="page-container">
-            <div className="header">
-                <button onClick={handlePause} className="return-button"><img src={menu} alt="menu button"></img></button>
-                <HealthBar livesLeft={livesLeft} />
-                <h2>Kategoria: {category}</h2>
-        </div>
-        <div className='selected-word'>
-            <SelectedWord word={selectedWord} guessedLetters={guessedLetters} />
-        </div>
-        {gameStatus !== "playing" && (
-        <button onClick={goToHomePage}>
-            {gameStatus === "won" ? "Wygrałeś! :-) Zagraj ponownie" : "Przegrałeś! :-( Spróbuj ponownie"}
-        </button>
+        {hasEnded && (
+        <EndGame gameStatus={gameStatus}/>
         )}
-        {gameStatus === "playing" && <div className="letters"><LetterButtons onLetterClick={handleLetterClick} guessedLetters={guessedLetters}/></div>}
+        <div className="page-container">
+                <div className="header">
+                    <button onClick={handlePause} className="return-button">
+                        <img src={menu} alt="menu button"></img>
+                    </button>
+                    <HealthBar livesLeft={livesLeft} />
+                    <h2>Kategoria: {category}</h2>
+                </div>
+                <SelectedWord word={selectedWord} guessedLetters={guessedLetters} />
+        {gameStatus === "playing" && <LetterButtons onLetterClick={handleLetterClick} guessedLetters={guessedLetters}/>}
         </div>
     </>
     );
