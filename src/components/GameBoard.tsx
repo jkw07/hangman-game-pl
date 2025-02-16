@@ -6,10 +6,9 @@ import { GameData } from "./GameData";
 import { LetterButtons } from "./LetterButtons";
 import { SelectedWord } from "./SelectedWord";
 import { useGameLogic } from "./GameLogic";
-import { LivesCounter} from "./LivesCounter";
 import { Paused } from "./Paused";
-import logo from '../assets/images/logo.svg'
-import menu from '../assets/images/icon-menu.svg'
+import { HealthBar } from "./HealthBar";
+import menu from '../assets/images/icon-menu.svg';
 
 export const GameBoard = () => {
     const [isPaused, setIsPaused] = useState(false);
@@ -53,9 +52,9 @@ export const GameBoard = () => {
         <div className="page-container">
             <div className="header">
                 <button onClick={handlePause} className="return-button"><img src={menu} alt="menu button"></img></button>
+                <HealthBar livesLeft={livesLeft} />
                 <h2>Kategoria: {category}</h2>
         </div>
-        <LivesCounter livesLeft={livesLeft}/>
         <div className='selected-word'>
             <SelectedWord word={selectedWord} guessedLetters={guessedLetters} />
         </div>

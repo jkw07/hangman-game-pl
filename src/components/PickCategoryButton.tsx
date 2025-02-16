@@ -17,7 +17,7 @@ export const PickCategoryButton = () => {
   return (
     <>
       {categories.map((category, index) => (
-        <button className='blue-button' key={index} value={category} onClick={() => handleCategoryClick(category)}>
+        <button className='default-button' key={index} value={category} onClick={() => handleCategoryClick(category)}>
           {category}
         </button>
       ))}

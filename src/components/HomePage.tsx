@@ -19,7 +19,7 @@ export const HomePage = () => {
                 </div>
                 <div className="container">
                     <button onClick={goToCategoriesPage} className="play-button"><img src={play} alt="play button"></img></button>
-                    <button className="blue-button" onClick={goToRulesPage}>Zasady gry</button>
+                    <button className="default-button" onClick={goToRulesPage}>Zasady gry</button>
                 </div>
             </header>
         </>

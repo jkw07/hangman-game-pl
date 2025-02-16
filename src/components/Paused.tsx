@@ -19,9 +19,9 @@ export const Paused = ({onContinue}: PausedProps) => {
         </div>
         <div className="paused">
         <div className="paused-container">
-            <button className="blue-button" onClick={onContinue}>Kontynuuj</button>
-            <button className="blue-button" onClick={goToCategoriesPage}>Nowa kategoria</button>
-            <button className="blue-button" onClick={goToHomePage}>Wyjście z gry</button>
+            <button className="default-button" onClick={onContinue}>Kontynuuj</button>
+            <button className="default-button" onClick={goToCategoriesPage}>Nowa kategoria</button>
+            <button className="default-button quit-button" onClick={goToHomePage}>Wyjście z gry</button>
         </div>
     </div>
         </>

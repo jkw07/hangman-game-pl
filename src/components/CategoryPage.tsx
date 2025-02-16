@@ -13,7 +13,7 @@ export const CategoryPage = () => {
             <div className="header">
                 <button onClick={goToHomePage} className="return-button"><img src={returnIcon} alt="return button"></img></button>
             <h2>Kategorie</h2>
-            </div>
+        </div>
         <div className="categories">
             <PickCategoryButton/>
         </div>
