@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { goToCategoriesPage, goToHomePage } from "../utils/navigation";
 
 type PausedProps = {
     onContinue: () => void;
@@ -6,12 +7,6 @@ type PausedProps = {
 
 export const Paused = ({onContinue}: PausedProps) => {
     const navigate = useNavigate();
-    const goToCategoriesPage = () => {
-    navigate('/CategoryPage');
-    };
-    const goToHomePage = () => {
-    navigate('/');
-    };
     return (
         <>
         <div className="paused-header">
@@ -20,8 +15,8 @@ export const Paused = ({onContinue}: PausedProps) => {
         <div className="paused">
         <div className="paused-container">
             <button className="default-button" onClick={onContinue}>Kontynuuj</button>
-            <button className="default-button" onClick={goToCategoriesPage}>Nowa kategoria</button>
-            <button className="default-button quit-button" onClick={goToHomePage}>Wyjście z gry</button>
+            <button className="default-button" onClick={()=>goToCategoriesPage(navigate)}>Nowa kategoria</button>
+            <button className="default-button quit-button" onClick={()=>goToHomePage(navigate)}>Wyjście z gry</button>
         </div>
     </div>
         </>
