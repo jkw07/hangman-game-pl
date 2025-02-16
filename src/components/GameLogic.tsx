@@ -1,11 +1,15 @@
 import { useState } from "react";
 
+export enum GameStatus {
+  Playing = 'playing',
+  Won = 'won',
+  Lost = 'lost',
+}
+
 export const useGameLogic = (selectedWord: string, maxLives: number) => {
   const [livesLeft, setLivesLeft] = useState(maxLives);
   const [guessedLetters, setGuessedLetters] = useState<string[]>([]);
-  const [gameStatus, setGameStatus] = useState<"playing" | "won" | "lost">("playing");
-
-  //TODO enum = gamestatus (playing ... itd)
+  const [gameStatus, setGameStatus] = useState<GameStatus>(GameStatus.Playing);
 
   const handleLetterClick = (letter: string) => {
     const newGuessedLetters = [...guessedLetters, letter];
@@ -18,9 +22,9 @@ export const useGameLogic = (selectedWord: string, maxLives: number) => {
   const checkGameStatus = (word: string, guessedLetters: string[], livesLeft: number) => {
     const wordLetters = Array.from(new Set(word.split("")));
     if (wordLetters.every((letter) => guessedLetters.includes(letter))) {
-      setGameStatus("won");
+      setGameStatus(GameStatus.Won);
     } else if (livesLeft <= 0) {
-      setGameStatus("lost");
+      setGameStatus(GameStatus.Lost);
     }
   };
   return { livesLeft, guessedLetters, gameStatus, handleLetterClick };

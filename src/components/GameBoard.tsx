@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import { useLocation } from "react-router-dom";
@@ -6,6 +5,7 @@ import { GameData } from "./GameData";
 import { LetterButtons } from "./LetterButtons";
 import { SelectedWord } from "./SelectedWord";
 import { useGameLogic } from "./GameLogic";
+import {GameStatus} from './GameLogic';
 import { Paused } from "./Paused";
 import { HealthBar } from "./HealthBar";
 import { EndGame } from "./EndGame";
@@ -34,7 +34,7 @@ export const GameBoard = () => {
     const { livesLeft, guessedLetters, gameStatus, handleLetterClick } = useGameLogic(selectedWord, maxLives);
 
     useEffect(() => {
-        if (gameStatus !== "playing") {
+        if (gameStatus !== GameStatus.Playing) {
             setHasEnded(true);
         }
     }, [gameStatus]);
@@ -62,10 +62,10 @@ export const GameBoard = () => {
                         <img src={menu} alt="menu button"></img>
                     </button>
                     <HealthBar livesLeft={livesLeft} />
-                    <h2>Kategoria: {category}</h2>
+                    <h2 className="game-board-header">Kategoria: {category}</h2>
                 </div>
                 <SelectedWord word={selectedWord} guessedLetters={guessedLetters} />
-        {gameStatus === "playing" && <LetterButtons onLetterClick={handleLetterClick} guessedLetters={guessedLetters}/>}
+        {gameStatus === GameStatus.Playing && <LetterButtons onLetterClick={handleLetterClick} guessedLetters={guessedLetters}/>}
         </div>
     </>
     );

@@ -38,7 +38,7 @@ button:hover {
 @keyframes bounce {
     0% { transform: scale(1); }
     40% { transform: scale(1.05); }
-    60% { transform: scale(0.95); } /* Minimalne cofnięcie dla efektu odbicia */
+    60% { transform: scale(0.95); } 
     80% { transform: scale(1.05); }
     100% { transform: scale(1.1); }
 }
@@ -88,7 +88,7 @@ button:hover {
     justify-content: center;
     cursor: pointer;
     img {
-        padding: 30px;
+        padding: 30px; //
         align-self: center;
     }
 } 
@@ -178,6 +178,18 @@ button:hover {
             margin-top: 40px;
             margin-bottom: 20px;
         }
+    }
+}
+
+.end-game-header {
+    position: fixed;
+    top: 18%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-color);
+    z-index: 2001;
+    h2 {
+        font-size: 84px;
     }
 }
 
@@ -275,6 +287,7 @@ button:hover {
 
 .selected-word-container {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     align-items: center;
     justify-content: center;
@@ -309,6 +322,169 @@ button:hover {
         width: 70px;
         height: 80px;
         border-radius: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .home-page {
+        background-image: url("../assets/images/background-tablet.svg");
+    }
+    .paused-header {
+        top: 14%;
+    }
+
+    .end-game-header {
+        top: 14%;
+    }
+
+    .header {
+        h2 {
+            font-size: 36px;
+        }
+    }
+    .game-rules-container {
+        width: 80%;
+        font-size: 16px;
+    }
+
+    .categories {
+        gap: 0;
+        width: 90%;
+        margin: 20px auto;
+        justify-content: center;
+        button {
+            margin: 10px;
+        }
+    }
+
+    .selected-word-container {
+        gap: 5px;
+        width: 90%;
+        margin: 20px auto;
+        .selected-word-letter {
+            font-size: 36px;
+            width: 50px;
+            height: 60px;
+        }
+    }
+
+    .letters-container {
+        gap: 5px;
+        width: 90%;
+        .letter {
+            font-size: 36px;
+            width: 50px;
+            height: 60px;
+        }
+    }
+    .return-button, .play-button, .quit-button {
+        transform: scale(0.9);
+    }
+    .end-game-header {
+        top: 16%;
+        h2 {
+            font-size: 56px;
+        }
+    }
+}
+
+@media (max-width: 375px) {
+    .home-page {
+        background-image: url("../assets/images/background-mobile.svg");
+    }
+    .header {
+        h2 {
+            font-size: 24px;
+        }
+    }
+    .progress {
+        width: 100px;
+    }
+    .game-rules-container {
+     padding: 15px;
+     font-size: 14px;
+    }
+    .categories {
+        button {
+            margin: 8px;
+            font-size: 20px;
+        }
+    }
+    .selected-word-container {
+        gap: 1px;
+        .selected-word-letter {
+            font-size: 18px;
+            width: 30px;
+            height: 40px;
+        }
+    }
+
+    .letters-container {
+        gap: 3px;
+        .letter {
+            font-size: 24px;
+            width: 40px;
+            height: 50px;
+        }
+    }
+    .header button {
+        left: 15px; 
+        top: 15px;
+    }
+    .return-button, .play-button, .quit-button {
+        transform: scale(0.7);
+    }
+    .default-button {
+        transform: scale(0.9);
+    }
+    .health-bar {
+        transform: scale(0.7);
+    }
+    .game-board-header {
+        margin-top: 60px;
+        margin-bottom: 10px;
+    }
+    .header {
+        margin: 30px 5px;
+    }
+    .paused {
+        padding: 25px;
+        width: 80%;
+        .paused-container {
+            min-height: 300px;
+            button {
+                margin: 10px auto;
+            }
+        }
+    }
+    .paused-header {
+        top: 22%;
+        h2 {
+            font-size: 74px;
+        }
+    }
+    .end-game-header {
+        top: 20%;
+        h2 {
+            font-size: 56px;
+        }
+    }
+    .end-game {
+        padding: 25px;
+        width: 80%;
+        .end-game-container {
+            min-height: 300px;
+            button {
+                margin: 10px auto;
+            }
+            h3 {
+                margin-top: 10px;
+            }
+            i {
+                margin-top: 40px;
+                margin-bottom: 20px;
+            }
+        }
     }
 }
 
