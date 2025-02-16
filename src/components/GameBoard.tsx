@@ -67,7 +67,7 @@ export const GameBoard = () => {
         <>
         {isPaused && <Paused onContinue={handleContinue} />}
         {hasEnded && (
-        <EndGame gameStatus={gameStatus}/>
+        <EndGame gameStatus={gameStatus} word={selectedWord}/>
         )}
         <div className="page-container">
                 <div className="header">
