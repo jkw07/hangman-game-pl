@@ -7,7 +7,12 @@ export const SelectedWord = ({ word, guessedLetters }: SelectedWordProps) => {
     return (
         <div className="selected-word-container">
             {word.split("").map((letter: string, index: number) => (
-                <div className="selected-word-letter" key={index}>{guessedLetters.includes(letter) ? letter : "_"}</div>
+                <div 
+                    key={index} 
+                    className={`${letter === " " ? "selected-word-empty" : "selected-word-letter"}`}
+                >
+                    {letter === " " ? " " : guessedLetters.includes(letter) ? letter : "_"}
+                </div>
             ))}
         </div>
     );

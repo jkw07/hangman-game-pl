@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { useLocation } from "react-router-dom";
-import { GameData } from "./GameData"; 
+import { GameData, letters } from "./GameData"; 
 import { LetterButtons } from "./LetterButtons";
 import { SelectedWord } from "./SelectedWord";
 import { useGameLogic } from "./GameLogic";
@@ -32,6 +32,19 @@ export const GameBoard = () => {
 
     const maxLives = 6;
     const { livesLeft, guessedLetters, gameStatus, handleLetterClick } = useGameLogic(selectedWord, maxLives);
+
+    useEffect(() => {
+        const handleKeyPress = (event: KeyboardEvent) => {
+            const pressedKey = event.key.toUpperCase();
+            if (letters.includes(pressedKey) && !guessedLetters.includes(pressedKey)) {
+                handleLetterClick(pressedKey);
+            }
+        };
+        document.addEventListener("keydown", handleKeyPress);
+        return () => {
+            document.removeEventListener("keydown", handleKeyPress);
+        };
+    }, [guessedLetters, handleLetterClick]); 
 
     useEffect(() => {
         if (gameStatus !== GameStatus.Playing) {

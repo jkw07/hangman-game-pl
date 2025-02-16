@@ -20,7 +20,7 @@ export const useGameLogic = (selectedWord: string, maxLives: number) => {
   };
 
   const checkGameStatus = (word: string, guessedLetters: string[], livesLeft: number) => {
-    const wordLetters = Array.from(new Set(word.split("")));
+    const wordLetters = Array.from(new Set(word.split("").filter(letter => letter !== " ")));
     if (wordLetters.every((letter) => guessedLetters.includes(letter))) {
       setGameStatus(GameStatus.Won);
     } else if (livesLeft <= 0) {

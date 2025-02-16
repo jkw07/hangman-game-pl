@@ -18,4 +18,7 @@ export const GameData: gameDataType[] = [
         {category: "STANY ZJEDNOCZONE",
           words: ["ARIZONA", "TEKSAS", "MISSOURI", "INDIANA", "PENSYLWANIA", "VERMONT", "OREGON", 'WASZYNGTON', "NEVADA", "MONTANA", "IDAHO"]
         },
+        {category: "próba",
+          words: ["ALA MA KOTA"]
+        },
     ]
