@@ -486,6 +486,16 @@ button:hover {
             }
         }
     }
+    .home-page {
+        .logo {
+            transform: scale(0.7);
+            margin-bottom: -90px;
+        }
+        .container {
+            padding: 40px;
+            width: 330px;
+        }
+    }
 }
 
 /*# sourceMappingURL=index.scss.map */
