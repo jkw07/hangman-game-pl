@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 export enum GameStatus {
-  Playing = 'playing',
-  Won = 'won',
-  Lost = 'lost',
+  Playing = "playing",
+  Won = "won",
+  Lost = "lost",
 }
 
 export const useGameLogic = (selectedWord: string, maxLives: number) => {
@@ -13,20 +13,39 @@ export const useGameLogic = (selectedWord: string, maxLives: number) => {
 
   const handleLetterClick = (letter: string) => {
     const newGuessedLetters = [...guessedLetters, letter];
-    const newLivesLeft = selectedWord.includes(letter) ? livesLeft : livesLeft - 1;
+    const newLivesLeft = selectedWord.includes(letter)
+      ? livesLeft
+      : livesLeft - 1;
     setGuessedLetters(newGuessedLetters);
     setLivesLeft(newLivesLeft);
     checkGameStatus(selectedWord, newGuessedLetters, newLivesLeft);
   };
 
-  const checkGameStatus = (word: string, guessedLetters: string[], livesLeft: number) => {
-    const wordLetters = Array.from(new Set(word.split("").filter(letter => letter !== " ")));
+  const handleResetWord = () => {
+    setLivesLeft(maxLives);
+    setGuessedLetters([]);
+    setGameStatus(GameStatus.Playing);
+  };
+
+  const checkGameStatus = (
+    word: string,
+    guessedLetters: string[],
+    livesLeft: number
+  ) => {
+    const wordLetters = Array.from(
+      new Set(word.split("").filter((letter) => letter !== " "))
+    );
     if (wordLetters.every((letter) => guessedLetters.includes(letter))) {
       setGameStatus(GameStatus.Won);
     } else if (livesLeft <= 0) {
       setGameStatus(GameStatus.Lost);
     }
   };
-  return { livesLeft, guessedLetters, gameStatus, handleLetterClick };
+  return {
+    livesLeft,
+    guessedLetters,
+    gameStatus,
+    handleLetterClick,
+    handleResetWord,
+  };
 };
-
