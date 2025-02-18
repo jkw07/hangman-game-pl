@@ -9,12 +9,14 @@ export const CategoryPage = () => {
     return (
         <div className="page-container">
             <div className="header">
-                <button onClick={()=>goToHomePage(navigate)} className="return-button"><img src={returnIcon} alt="return button"></img></button>
-            <h2>Kategorie</h2>
-        </div>
-        <div className="categories">
-            <PickCategoryButton/>
-        </div>
+                <button onClick={()=>goToHomePage(navigate)} className="return-button">
+                    <img src={returnIcon} alt="return button"></img>
+                </button>
+                <h2>Kategorie</h2>
+            </div>
+            <div className="categories">
+                <PickCategoryButton/>
+            </div>
         </div>
     )
 }
