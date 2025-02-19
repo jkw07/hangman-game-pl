@@ -1,17 +1,20 @@
-import heart from '../assets/images/icon-heart.svg'
+import heart from "../assets/images/icon-heart.svg";
+import { useGameContext } from "./GameContext";
 
-type HealthBarProps = {
-    livesLeft: number,
-}
-
-export const HealthBar = ({livesLeft}: HealthBarProps) => {
-    return (
-        <div className="health-bar">
-            <div className='progress'>
-                <span>{livesLeft}</span>
-          	<div className='progress-bar' style={{ width: `${livesLeft / 0.08}%` }}><span>{livesLeft}</span></div>
-            </div>
-            <img className="heart-icon" alt="heart icon" src={heart}></img>
+export const HealthBar = () => {
+  const { state } = useGameContext();
+  return (
+    <div className="health-bar">
+      <div className="progress">
+        <span>{state.livesLeft}</span>
+        <div
+          className="progress-bar"
+          style={{ width: `${state.livesLeft / 0.08}%` }}
+        >
+          <span>{state.livesLeft}</span>
         </div>
-    )
-}
+      </div>
+      <img className="heart-icon" alt="heart icon" src={heart}></img>
+    </div>
+  );
+};

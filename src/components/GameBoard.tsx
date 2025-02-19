@@ -1,120 +1,93 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
-import { useLocation } from "react-router-dom";
-import { GameData, letters } from "./GameData";
+import { letters } from "./GameData";
 import { LetterButtons } from "./LetterButtons";
 import { SelectedWord } from "./SelectedWord";
-import { useGameLogic } from "./GameLogic";
-import { GameStatus } from "./GameLogic";
+import { GameStatus } from "./Reducer";
 import { Paused } from "./Paused";
 import { HealthBar } from "./HealthBar";
 import { EndGame } from "./EndGame";
+import { useGameContext } from "./GameContext";
+import { GameActionType } from "./Reducer";
 import menu from "../assets/images/icon-menu.svg";
 
 export const GameBoard = () => {
-  const [isPaused, setIsPaused] = useState(false);
-  const [hasEnded, setHasEnded] = useState(false);
-  const handlePause = () => {
-    setIsPaused(true);
-  };
+  const { state, dispatch } = useGameContext();
 
-  const handleContinue = () => {
-    setIsPaused(false);
-  };
-
-  const location = useLocation();
-  const category = location.state?.category as string;
-
-  const selectedCategory = GameData.find((item) => item.category === category);
-  const wordsArray = selectedCategory ? selectedCategory.words : [];
-  const selectWord = () => {
-    if (wordsArray.length > 0) {
-      return wordsArray[Math.floor(Math.random() * wordsArray.length)];
-    } else {
-      return "";
+  useEffect(() => {
+    const savedState = localStorage.getItem("gameState");
+    if (savedState) {
+      const parsedState = JSON.parse(savedState);
+      dispatch({
+        type: GameActionType.PICK_CATEGORY,
+        payload: parsedState.selectedCategory || "",
+      });
     }
-  };
-  const [selectedWord, setSelectedWord] = useState<string>(selectWord());
+  }, [dispatch]);
 
-  const handleSelectNewWord = () => {
-    setSelectedWord(selectWord());
-    setHasEnded(false);
-    setIsPaused(false);
-    handleResetWord();
+  const onLetterClick = (letter: string) => {
+    if (state.guessedLetters.includes(letter)) {
+      return;
+    }
+    dispatch({ type: GameActionType.GUESS_LETTER, payload: letter });
+    if (!state.selectedWord.includes(letter)) {
+      dispatch({ type: GameActionType.LOSE_LIFE });
+    }
+    dispatch({ type: GameActionType.CHECK_STATUS });
   };
-
-  const maxLives = 6;
-  const {
-    livesLeft,
-    guessedLetters,
-    gameStatus,
-    handleLetterClick,
-    handleResetWord,
-  } = useGameLogic(selectedWord, maxLives);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       const pressedKey = event.key.toUpperCase();
       if (
         letters.includes(pressedKey) &&
-        !guessedLetters.includes(pressedKey)
+        !state.guessedLetters.includes(pressedKey)
       ) {
-        handleLetterClick(pressedKey);
+        onLetterClick(pressedKey);
       }
     };
     document.addEventListener("keydown", handleKeyPress);
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
     };
-  }, [guessedLetters, handleLetterClick]);
+  }, [state.guessedLetters, onLetterClick]);
 
   useEffect(() => {
-    if (gameStatus !== GameStatus.Playing) {
-      setHasEnded(true);
+    if (state.gameStatus !== GameStatus.Playing) {
+      dispatch({ type: GameActionType.END });
     }
-  }, [gameStatus]);
+  }, [state.gameStatus]);
 
   useEffect(() => {
     const pageContainer = document.querySelector(".page-container");
     if (pageContainer) {
-      if (isPaused || hasEnded) {
+      if (state.isPaused || state.hasEnded) {
         pageContainer.classList.add("blurred");
       } else {
         pageContainer.classList.remove("blurred");
       }
     }
-  }, [isPaused, hasEnded]);
+  }, [state.isPaused, state.hasEnded]);
 
   return (
     <>
-      {isPaused && (
-        <Paused
-          onContinue={handleContinue}
-          handleSelectNewWord={handleSelectNewWord}
-        />
-      )}
-      {hasEnded && (
-        <EndGame
-          gameStatus={gameStatus}
-          word={selectedWord}
-          handleSelectNewWord={handleSelectNewWord}
-        />
-      )}
+      {state.isPaused && <Paused />}
+      {state.hasEnded && <EndGame />}
       <div className="page-container">
         <div className="header">
-          <button onClick={handlePause} className="return-button">
+          <button
+            onClick={() => dispatch({ type: GameActionType.PAUSE })}
+            className="return-button"
+          >
             <img src={menu} alt="menu button"></img>
           </button>
-          <HealthBar livesLeft={livesLeft} />
-          <h2 className="game-board-header">Kategoria: {category}</h2>
+          <HealthBar />
+          <h2 className="game-board-header">
+            Kategoria: {state.selectedCategory}
+          </h2>
         </div>
-        <SelectedWord word={selectedWord} guessedLetters={guessedLetters} />
-        {gameStatus === GameStatus.Playing && (
-          <LetterButtons
-            onLetterClick={handleLetterClick}
-            guessedLetters={guessedLetters}
-          />
-        )}
+        <SelectedWord />
+        {state.gameStatus === GameStatus.Playing && <LetterButtons />}
       </div>
     </>
   );

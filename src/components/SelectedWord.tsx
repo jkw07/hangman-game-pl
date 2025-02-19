@@ -1,19 +1,27 @@
-type SelectedWordProps = {
-    word: string;
-    guessedLetters: string[];
-}
+import { useGameContext } from "./GameContext";
 
-export const SelectedWord = ({ word, guessedLetters }: SelectedWordProps) => {
-    return (
-        <div className="selected-word-container">
-            {word.split("").map((letter: string, index: number) => (
-                <div 
-                    key={index} 
-                    className={`${letter === " " ? "selected-word-empty" : "selected-word-letter"}`}
-                >
-                    {letter === " " ? " " : guessedLetters.includes(letter) ? letter : "_"}
-                </div>
-            ))}
-        </div>
-    );
+export const SelectedWord = () => {
+  const { state } = useGameContext();
+
+  return (
+    <div className="selected-word-container">
+      {state.selectedWord.split("").map((letter: string, index: number) => {
+        let className = "selected-word-letter";
+        if (letter === " ") {
+          className = "selected-word-empty";
+        } else if (state.guessedLetters.includes(letter)) {
+          className = "selected-word-letter guessed";
+        }
+        return (
+          <div key={index} className={className}>
+            {letter === " "
+              ? " "
+              : state.guessedLetters.includes(letter)
+              ? letter
+              : "_"}
+          </div>
+        );
+      })}
+    </div>
+  );
 };

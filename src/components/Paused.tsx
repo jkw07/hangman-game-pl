@@ -1,12 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { goToCategoriesPage, goToHomePage } from "../utils/navigation";
+import { useGameContext } from "./GameContext";
+import { GameActionType } from "./Reducer";
 
-type PausedProps = {
-  onContinue: () => void;
-  handleSelectNewWord: () => void;
-};
-
-export const Paused = ({ onContinue, handleSelectNewWord }: PausedProps) => {
+export const Paused = () => {
+  const { state, dispatch } = useGameContext();
   const navigate = useNavigate();
   return (
     <div className="paused-wrapper">
@@ -14,10 +12,21 @@ export const Paused = ({ onContinue, handleSelectNewWord }: PausedProps) => {
         <div className="paused-header">
           <h2>Paused</h2>
         </div>
-        <button className="default-button" onClick={onContinue}>
+        <button
+          className="default-button"
+          onClick={() => dispatch({ type: GameActionType.CONTINUE })}
+        >
           Kontynuuj
         </button>
-        <button className="default-button" onClick={handleSelectNewWord}>
+        <button
+          className="default-button"
+          onClick={() =>
+            dispatch({
+              type: GameActionType.RESET_GAME,
+              payload: state.selectedCategory,
+            })
+          }
+        >
           Nowe słowo
         </button>
         <button
