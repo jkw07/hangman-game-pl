@@ -1,4 +1,3 @@
-import { GameData } from "./GameData";
 import { useNavigate } from "react-router-dom";
 import { goToGameBoard } from "../utils/navigation";
 import { useGameContext } from "./GameContext";
@@ -10,8 +9,8 @@ type gameDataType = {
 };
 
 export const PickCategoryButton = () => {
-  const { dispatch } = useGameContext();
-  const gameData: gameDataType[] = GameData;
+  const { state, dispatch } = useGameContext();
+  const gameData: gameDataType[] = state.gameData;
   const navigate = useNavigate();
   const categories: string[] = gameData.map((item) => item.category);
 

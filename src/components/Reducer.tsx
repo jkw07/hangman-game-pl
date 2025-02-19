@@ -1,4 +1,4 @@
-import { GameData } from "./GameData";
+import { GameData, gameDataType } from "./GameData";
 
 export enum GameStatus {
   Playing = "playing",
@@ -16,6 +16,7 @@ export type GameState = {
   gameStatus: GameStatus;
   selectedWord: string;
   selectedCategory: string;
+  gameData: gameDataType[];
 };
 
 export const initialState: GameState = {
@@ -26,6 +27,7 @@ export const initialState: GameState = {
   gameStatus: GameStatus.Playing,
   selectedWord: "",
   selectedCategory: "",
+  gameData: GameData,
 };
 
 export type GameAction =
@@ -33,6 +35,7 @@ export type GameAction =
   | { type: GameActionType.CONTINUE }
   | { type: GameActionType.END }
   | { type: GameActionType.LOSE_LIFE }
+  | { type: GameActionType.UPDATE_GAME_DATA }
   | { type: GameActionType.RESET_GAME; payload?: string }
   | { type: GameActionType.PICK_CATEGORY; payload: string }
   | { type: GameActionType.GUESS_LETTER; payload: string }
@@ -43,6 +46,7 @@ export enum GameActionType {
   CONTINUE = "CONTINUE",
   END = "END",
   LOSE_LIFE = "LOSE_LIFE",
+  UPDATE_GAME_DATA = "UPDATE_GAME_DATA",
   RESET_GAME = "RESET_GAME",
   PICK_CATEGORY = "PICK_CATEGORY",
   GUESS_LETTER = "GUESS_LETTER",
@@ -68,12 +72,24 @@ export const gameReducer = (
         gameStatus:
           state.livesLeft - 1 === 0 ? GameStatus.Lost : state.gameStatus,
       };
+    case GameActionType.UPDATE_GAME_DATA:
+      const addedData = localStorage.getItem("addedCategories");
+      const parsedData: gameDataType[] = addedData ? JSON.parse(addedData) : [];
+      if (!Array.isArray(parsedData)) {
+        console.error("Błąd: parsedData nie jest tablicą!", parsedData);
+        return state;
+      }
+
+      return {
+        ...state,
+        gameData: [...initialState.gameData, ...parsedData],
+      };
     case GameActionType.RESET_GAME:
       const newUpdatedState = {
         ...initialState,
         selectedCategory: action.payload || initialState.selectedCategory,
         selectedWord: action.payload
-          ? getRandomWord(action.payload)
+          ? getRandomWord(action.payload, state.gameData)
           : initialState.selectedWord,
       };
       localStorage.setItem("gameState", JSON.stringify(newUpdatedState));
@@ -81,8 +97,9 @@ export const gameReducer = (
     case GameActionType.PICK_CATEGORY:
       const updatedState = {
         ...initialState,
+        gameData: state.gameData,
         selectedCategory: action.payload,
-        selectedWord: getRandomWord(action.payload),
+        selectedWord: getRandomWord(action.payload, state.gameData),
       };
       localStorage.setItem("gameState", JSON.stringify(updatedState));
       return updatedState;
@@ -119,9 +136,10 @@ export const gameReducer = (
   }
 };
 
-const getRandomWord = (category: string) => {
-  const wordsArray =
-    GameData.find((item) => item.category === category)?.words || [];
+const getRandomWord = (category: string, gameData: gameDataType[]): string => {
+  const wordsArray: string[] =
+    gameData.find((item: gameDataType) => item.category === category)?.words ||
+    [];
 
   if (wordsArray.length > 0) {
     return wordsArray[Math.floor(Math.random() * wordsArray.length)];
@@ -130,7 +148,19 @@ const getRandomWord = (category: string) => {
   }
 };
 
-const initializeState = (category: string) => ({
-  ...initialState,
-  selectedWord: category ? getRandomWord(category) : "", // Losowanie słowa, jeśli jest kategoria
-});
+/* console.log("Wybrana kategoria:", category);
+ console.log("Aktualne gameData:", gameData);
+ const categoryData = gameData.find((cat) => cat.category === category);
+ console.log("Znaleziony obiekt kategorii:", categoryData);
+ if (!categoryData) {
+   console.error("Błąd: nie znaleziono kategorii w gameData");
+   return "";
+ }
+
+ if (!Array.isArray(categoryData.words) || categoryData.words.length === 0) {
+   console.error("Błąd: brak słów w kategorii", categoryData);
+   return "";
+ }
+ const randomIndex = Math.floor(Math.random() * categoryData.words.length);
+ console.log("Wylosowane słowo:", categoryData.words[randomIndex]);
+ return categoryData.words[randomIndex]; */

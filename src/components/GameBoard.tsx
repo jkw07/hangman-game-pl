@@ -56,7 +56,7 @@ export const GameBoard = () => {
     if (state.gameStatus !== GameStatus.Playing) {
       dispatch({ type: GameActionType.END });
     }
-  }, [state.gameStatus]);
+  }, [state.gameStatus, dispatch]);
 
   useEffect(() => {
     const pageContainer = document.querySelector(".page-container");
