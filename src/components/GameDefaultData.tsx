@@ -41,7 +41,7 @@ export type gameDataType = {
   words: string[];
 };
 
-export const GameData: gameDataType[] = [
+export const DefaultData: gameDataType[] = [
   {
     category: "MIASTA",
     words: [
@@ -487,3 +487,15 @@ export const GameData: gameDataType[] = [
     ],
   },
 ];
+
+const changeGameData = (data: gameDataType[]) => {
+  const addedData = localStorage.getItem("addedCategories");
+  const parsedData: gameDataType[] = addedData ? JSON.parse(addedData) : [];
+  if (!Array.isArray(parsedData)) {
+    console.error("Błąd: parsedData nie jest tablicą!", parsedData);
+    return data;
+  }
+  return [...data, ...parsedData];
+};
+
+export const GameData = changeGameData(DefaultData);

@@ -6,6 +6,7 @@ import { GameActionType } from "./Reducer";
 import returnIcon from "../assets/images/icon-back.svg";
 import { AddGameData } from "./AddGameData";
 import { useState } from "react";
+import { AddNewCategory } from "./AddNewCategory";
 
 export const CategoryPage = () => {
   const [newCategory, setNewCategory] = useState(false);
@@ -35,18 +36,10 @@ export const CategoryPage = () => {
         </div>
         <div className="categories">
           <PickCategoryButton />
-          <button
-            className="default-button quit-button"
-            onClick={openNewCategory}
-          >
-            Dodaj własną kategorię
-          </button>
-          <button
-            className="default-button quit-button"
-            onClick={deleteAddedCategories}
-          >
-            Usuń dodane kategorie
-          </button>
+          <AddNewCategory
+            openNewCategory={openNewCategory}
+            deleteAddedCategories={deleteAddedCategories}
+          />
         </div>
         {newCategory && <AddGameData closeNewCategory={closeNewCategory} />}
       </div>

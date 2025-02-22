@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { letters } from "./GameData";
+import { letters } from "./GameDefaultData";
 import { LetterButtons } from "./LetterButtons";
 import { SelectedWord } from "./SelectedWord";
 import { GameStatus } from "./Reducer";

@@ -1,4 +1,4 @@
-import { letters } from "./GameData";
+import { letters } from "./GameDefaultData";
 import { useGameContext } from "./GameContext";
 import { GameActionType } from "./Reducer";
 

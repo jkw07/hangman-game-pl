@@ -1,4 +1,4 @@
-import { GameData, gameDataType } from "./GameData";
+import { gameDataType, GameData } from "./GameDefaultData";
 
 export enum GameStatus {
   Playing = "playing",
@@ -79,9 +79,8 @@ export const gameReducer = (
         console.error("Błąd: parsedData nie jest tablicą!", parsedData);
         return state;
       }
-
       return {
-        ...state,
+        ...initialState,
         gameData: [...initialState.gameData, ...parsedData],
       };
     case GameActionType.RESET_GAME:
@@ -147,20 +146,3 @@ const getRandomWord = (category: string, gameData: gameDataType[]): string => {
     return "";
   }
 };
-
-/* console.log("Wybrana kategoria:", category);
- console.log("Aktualne gameData:", gameData);
- const categoryData = gameData.find((cat) => cat.category === category);
- console.log("Znaleziony obiekt kategorii:", categoryData);
- if (!categoryData) {
-   console.error("Błąd: nie znaleziono kategorii w gameData");
-   return "";
- }
-
- if (!Array.isArray(categoryData.words) || categoryData.words.length === 0) {
-   console.error("Błąd: brak słów w kategorii", categoryData);
-   return "";
- }
- const randomIndex = Math.floor(Math.random() * categoryData.words.length);
- console.log("Wylosowane słowo:", categoryData.words[randomIndex]);
- return categoryData.words[randomIndex]; */
