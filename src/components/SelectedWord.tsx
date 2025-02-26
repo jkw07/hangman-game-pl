@@ -1,7 +1,8 @@
-import { useGameContext } from "./GameContext";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 export const SelectedWord = () => {
-  const { state } = useGameContext();
+  const state = useSelector((state: RootState) => state.word);
 
   return (
     <div className="selected-word-container">

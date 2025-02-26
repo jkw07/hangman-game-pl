@@ -1,16 +1,16 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ROUTES } from "./config/config";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import { ROUTES } from "./config/routes";
 import { HomePage } from "./components/HomePage";
 import { CategoryPage } from "./components/CategoryPage";
 import { GameBoard } from "./components/GameBoard";
 import { HowToPlay } from "./components/HowToPlay";
-import { GameProvider } from "./components/GameContext";
 
 export const App = () => {
   return (
     <>
-      <GameProvider>
+      <Provider store={store}>
         <div className="App">
           <Router>
             <Routes>
@@ -21,7 +21,7 @@ export const App = () => {
             </Routes>
           </Router>
         </div>
-      </GameProvider>
+      </Provider>
     </>
   );
 };

@@ -1,17 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import { goToHomePage } from "../utils/navigation";
+import { goToHomePage } from "../config/navigation";
 import returnIcon from "../assets/images/icon-back.svg";
 
 export const HowToPlay = () => {
   const navigate = useNavigate();
+  const handlegoToHomePage = () => {
+    goToHomePage(navigate);
+  };
   return (
     <>
       <div className="page-container">
         <div className="header">
-          <button
-            onClick={() => goToHomePage(navigate)}
-            className="return-button"
-          >
+          <button onClick={handlegoToHomePage} className="return-button">
             <img src={returnIcon} alt="return button"></img>
           </button>
           <h2>Zasady gry</h2>

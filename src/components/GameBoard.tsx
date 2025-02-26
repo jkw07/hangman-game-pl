@@ -3,37 +3,29 @@ import { useEffect } from "react";
 import { letters } from "./GameDefaultData";
 import { LetterButtons } from "./LetterButtons";
 import { SelectedWord } from "./SelectedWord";
-import { GameStatus } from "./Reducer";
 import { Paused } from "./Paused";
 import { HealthBar } from "./HealthBar";
 import { EndGame } from "./EndGame";
-import { useGameContext } from "./GameContext";
-import { GameActionType } from "./Reducer";
 import menu from "../assets/images/icon-menu.svg";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../redux/store";
+import { guessLetter, looseLife, checkStatus } from "../redux/wordSlice";
+import { endGame } from "../redux/gameSlice";
 
 export const GameBoard = () => {
-  const { state, dispatch } = useGameContext();
-
-  useEffect(() => {
-    const savedState = localStorage.getItem("gameState");
-    if (savedState) {
-      const parsedState = JSON.parse(savedState);
-      dispatch({
-        type: GameActionType.PICK_CATEGORY,
-        payload: parsedState.selectedCategory || "",
-      });
-    }
-  }, [dispatch]);
+  const wordState = useSelector((state: RootState) => state.word);
+  const gameState = useSelector((state: RootState) => state.game);
+  const dispatch = useDispatch();
 
   const onLetterClick = (letter: string) => {
-    if (state.guessedLetters.includes(letter)) {
+    if (wordState.guessedLetters.includes(letter)) {
       return;
     }
-    dispatch({ type: GameActionType.GUESS_LETTER, payload: letter });
-    if (!state.selectedWord.includes(letter)) {
-      dispatch({ type: GameActionType.LOSE_LIFE });
+    dispatch(guessLetter(letter));
+    if (!wordState.selectedWord.includes(letter)) {
+      dispatch(looseLife());
     }
-    dispatch({ type: GameActionType.CHECK_STATUS });
+    dispatch(checkStatus());
   };
 
   useEffect(() => {
@@ -41,7 +33,7 @@ export const GameBoard = () => {
       const pressedKey = event.key.toUpperCase();
       if (
         letters.includes(pressedKey) &&
-        !state.guessedLetters.includes(pressedKey)
+        !wordState.guessedLetters.includes(pressedKey)
       ) {
         onLetterClick(pressedKey);
       }
@@ -50,18 +42,18 @@ export const GameBoard = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
     };
-  }, [state.guessedLetters, onLetterClick]);
+  }, [wordState.guessedLetters]);
 
   useEffect(() => {
-    if (state.gameStatus !== GameStatus.Playing) {
-      dispatch({ type: GameActionType.END });
+    if (wordState.status !== "none") {
+      dispatch(endGame());
     }
-  }, [state.gameStatus, dispatch]);
+  }, [wordState.status]);
 
   useEffect(() => {
     const pageContainer = document.querySelector(".page-container");
     if (pageContainer) {
-      if (state.isPaused || state.hasEnded) {
+      if (gameState === "paused" || state.hasEnded) {
         pageContainer.classList.add("blurred");
       } else {
         pageContainer.classList.remove("blurred");
@@ -87,7 +79,9 @@ export const GameBoard = () => {
           </h2>
         </div>
         <SelectedWord />
-        {state.gameStatus === GameStatus.Playing && <LetterButtons />}
+        {state.gameStatus === GameStatus.Playing && (
+          <LetterButtons onLetterClick={onLetterClick} />
+        )}
       </div>
     </>
   );

@@ -1,44 +1,47 @@
 import { useNavigate } from "react-router-dom";
-import { goToCategoriesPage, goToHomePage } from "../utils/navigation";
-import { useGameContext } from "./GameContext";
-import { GameActionType } from "./Reducer";
+import { goToCategoriesPage, goToHomePage } from "../config/navigation";
+import { useDispatch } from "react-redux";
+import { continueGame } from "../redux/gameSlice";
+import { replaceWord, resetGame } from "../redux/wordSlice";
 
 export const Paused = () => {
-  const { state, dispatch } = useGameContext();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleContinue = () => {
+    dispatch(continueGame());
+  };
+
+  const shuffleWord = () => {
+    dispatch(replaceWord());
+  };
+
+  const goToCategories = () => {
+    goToCategoriesPage(navigate);
+    dispatch(resetGame());
+  };
+
+  const quitGame = () => {
+    goToHomePage(navigate);
+    dispatch(resetGame());
+  };
+
   return (
     <div className="paused-wrapper">
       <div className="paused">
         <div className="paused-header">
           <h2>Paused</h2>
         </div>
-        <button
-          className="default-button"
-          onClick={() => dispatch({ type: GameActionType.CONTINUE })}
-        >
+        <button className="default-button" onClick={handleContinue}>
           Kontynuuj
         </button>
-        <button
-          className="default-button"
-          onClick={() =>
-            dispatch({
-              type: GameActionType.RESET_GAME,
-              payload: state.selectedCategory,
-            })
-          }
-        >
+        <button className="default-button" onClick={shuffleWord}>
           Nowe słowo
         </button>
-        <button
-          className="default-button"
-          onClick={() => goToCategoriesPage(navigate)}
-        >
+        <button className="default-button" onClick={goToCategories}>
           Nowa kategoria
         </button>
-        <button
-          className="default-button quit-button"
-          onClick={() => goToHomePage(navigate)}
-        >
+        <button className="default-button quit-button" onClick={quitGame}>
           Wyjście z gry
         </button>
       </div>

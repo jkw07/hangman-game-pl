@@ -1,22 +1,27 @@
 import { useState } from "react";
-import { GameActionType } from "./Reducer";
-import { useGameContext } from "./GameContext";
-import { letters } from "./GameDefaultData";
+import { letters } from "../gameData/letters";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { loadParsedData, saveParsedData } from "../utils/localStorage";
+import { addToParsedData } from "../redux/dataSlice";
+import { useDispatch } from "react-redux";
 
 type AddGameDataProps = {
   closeNewCategory: () => void;
 };
 
 export const AddGameData = ({ closeNewCategory }: AddGameDataProps) => {
-  const { state, dispatch } = useGameContext();
+  const dispatch = useDispatch();
+  const state = useSelector((state: RootState) => state.data);
   const [category, setCategory] = useState("");
   const [words, setWords] = useState("");
   const [categoryError, setCategoryError] = useState(false);
+  const gameData = [...state.defaultData, ...state.parsedData];
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newCategory = e.target.value.trim();
     setCategory(newCategory);
-    const categoryExists = state.gameData.some(
+    const categoryExists = gameData.some(
       (item) => item.category.toLowerCase() === newCategory.toLowerCase()
     );
     if (categoryExists) {
@@ -38,14 +43,12 @@ export const AddGameData = ({ closeNewCategory }: AddGameDataProps) => {
       category: category.toUpperCase(),
       words: wordsArray.map((word) => word.trim()),
     };
-    const existingData = JSON.parse(
-      localStorage.getItem("addedCategories") || "[]"
-    );
+    const existingData = loadParsedData();
     existingData.push(newCategory);
-    localStorage.setItem("addedCategories", JSON.stringify(existingData));
+    saveParsedData(existingData);
     setCategory("");
     setWords("");
-    dispatch({ type: GameActionType.UPDATE_GAME_DATA });
+    existingData.forEach((data) => dispatch(addToParsedData(data)));
     closeNewCategory();
   };
   const allowedCharsRegex = new RegExp(`[^${letters.join("")},\\s]`, "gi");

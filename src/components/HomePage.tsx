@@ -1,19 +1,24 @@
 import { useNavigate } from "react-router-dom";
-import { goToCategoriesPage, goToRulesPage } from "../utils/navigation";
-import { GameActionType } from "./Reducer"; // Adjust the import path as necessary
+import { goToCategoriesPage, goToRulesPage } from "../config/navigation";
 
 import logo from "../assets/images/logo.svg";
 import play from "../assets/images/icon-play.svg";
-import { useGameContext } from "./GameContext";
+import { useDispatch } from "react-redux";
+import { startGame } from "../redux/gameSlice";
 
 export const HomePage = () => {
-  const { dispatch } = useGameContext();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handlePlay = () => {
-    dispatch({ type: GameActionType.UPDATE_GAME_DATA });
+    dispatch(startGame());
     goToCategoriesPage(navigate);
   };
-  const navigate = useNavigate();
+
+  const handleShowRules = () => {
+    goToRulesPage(navigate);
+  };
+
   return (
     <>
       <header className="home-page">
@@ -21,13 +26,10 @@ export const HomePage = () => {
           <img src={logo} alt="Hangman Logo"></img>
         </div>
         <div className="container">
-          <button onClick={() => handlePlay()} className="play-button">
+          <button onClick={handlePlay} className="play-button">
             <img src={play} alt="play button"></img>
           </button>
-          <button
-            className="default-button"
-            onClick={() => goToRulesPage(navigate)}
-          >
+          <button className="default-button" onClick={handleShowRules}>
             Zasady gry
           </button>
         </div>

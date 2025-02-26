@@ -1,8 +1,9 @@
 import heart from "../assets/images/icon-heart.svg";
-import { useGameContext } from "./GameContext";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 export const HealthBar = () => {
-  const { state } = useGameContext();
+  const state = useSelector((state: RootState) => state.word);
   return (
     <div className="health-bar">
       <div className="progress">

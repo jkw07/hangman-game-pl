@@ -1,34 +1,32 @@
 import { useNavigate } from "react-router-dom";
-import { goToGameBoard } from "../utils/navigation";
-import { useGameContext } from "./GameContext";
-import { GameActionType } from "./Reducer";
+import { goToGameBoard } from "../config/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { pickCategory, pickRandomWord } from "../redux/wordSlice";
 
-type gameDataType = {
-  category: string;
-  words: string[];
-};
+import { RootState } from "../redux/store";
 
 export const PickCategoryButton = () => {
-  const { state, dispatch } = useGameContext();
-  const gameData: gameDataType[] = state.gameData;
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const categories: string[] = gameData.map((item) => item.category);
+  const state = useSelector((state: RootState) => state.data);
+  const gameData = [...state.defaultData, ...state.parsedData];
 
-  const handleCategoryButtonClick = (category: string) => {
-    dispatch({ type: GameActionType.PICK_CATEGORY, payload: category });
+  const handleCategoryButtonClick = (category: string, words: string[]) => {
+    dispatch(pickCategory({ category, words }));
+    dispatch(pickRandomWord());
     goToGameBoard(navigate);
   };
 
   return (
     <>
-      {categories.map((category, index) => (
+      {gameData.map((item, index) => (
         <button
           className="default-button"
           key={index}
-          value={category}
-          onClick={() => handleCategoryButtonClick(category)}
+          value={item.category}
+          onClick={() => handleCategoryButtonClick(item.category, item.words)}
         >
-          {category}
+          {item.category}
         </button>
       ))}
     </>

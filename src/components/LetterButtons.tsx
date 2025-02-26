@@ -1,19 +1,14 @@
-import { letters } from "./GameDefaultData";
-import { useGameContext } from "./GameContext";
-import { GameActionType } from "./Reducer";
+import { letters } from "../gameData/letters";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
-export const LetterButtons = () => {
-  const { state, dispatch } = useGameContext();
-  const onLetterClick = (letter: string) => {
-    if (state.guessedLetters.includes(letter)) {
-      return;
-    }
-    dispatch({ type: GameActionType.GUESS_LETTER, payload: letter });
-    if (!state.selectedWord.includes(letter)) {
-      dispatch({ type: GameActionType.LOSE_LIFE });
-    }
-    dispatch({ type: GameActionType.CHECK_STATUS });
-  };
+type LetterButtonsProps = {
+  onLetterClick: (letter: string) => void;
+};
+
+export const LetterButtons = ({ onLetterClick }: LetterButtonsProps) => {
+  const state = useSelector((state: RootState) => state.word);
+
   return (
     <div className="letters-container">
       {letters.map((letter) => (

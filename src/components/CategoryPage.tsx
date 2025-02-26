@@ -1,26 +1,30 @@
 import { useNavigate } from "react-router-dom";
 import { PickCategoryButton } from "./PickCategoryButton";
-import { goToHomePage } from "../utils/navigation";
-import { useGameContext } from "./GameContext";
-import { GameActionType } from "./Reducer";
+import { goToHomePage } from "../config/navigation";
 import returnIcon from "../assets/images/icon-back.svg";
 import { AddGameData } from "./AddGameData";
 import { useState } from "react";
 import { AddNewCategory } from "./AddNewCategory";
+import { clearParsedData } from "../utils/localStorage";
+import { removeParsedData } from "../redux/dataSlice";
+import { useDispatch } from "react-redux";
 
 export const CategoryPage = () => {
+  const dispatch = useDispatch();
+
   const [newCategory, setNewCategory] = useState(false);
-  const { dispatch } = useGameContext();
   const openNewCategory = () => {
     setNewCategory(true);
   };
   const closeNewCategory = () => {
     setNewCategory(false);
   };
+
   const deleteAddedCategories = () => {
-    localStorage.removeItem("addedCategories");
-    dispatch({ type: GameActionType.UPDATE_GAME_DATA });
+    clearParsedData();
+    dispatch(removeParsedData());
   };
+
   const navigate = useNavigate();
   return (
     <>
