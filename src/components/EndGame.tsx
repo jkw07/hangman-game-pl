@@ -1,28 +1,12 @@
-import { useNavigate } from "react-router-dom";
-import { goToCategoriesPage, goToHomePage } from "../config/navigation";
-import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { continueGame, resetGame, replaceWord } from "../redux/gameSlice";
+import { useGameActions } from "../hooks/useGameActions";
+import { useSelector } from "react-redux";
 
 export const EndGame = () => {
   const state = useSelector((state: RootState) => state.game);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { handlePickNewCategory, handleQuitGame, handleShuffleWord } =
+    useGameActions();
 
-  const handlePickNewWord = () => {
-    dispatch(replaceWord());
-    dispatch(continueGame());
-  };
-
-  const handlePickNewCategory = () => {
-    dispatch(resetGame());
-    goToCategoriesPage(navigate);
-  }
-
-  const handleEndGame = () => {
-    dispatch(resetGame());
-    goToHomePage(navigate);
-  }
   return (
     <div className="end-game-wrapper">
       <div className="end-game">
@@ -32,9 +16,7 @@ export const EndGame = () => {
         {state.result === "won" && (
           <>
             <i className="fa-solid fa-trophy fa-2xl"></i>
-            <h3>
-              GRATULACJE, WYGRAŁEŚ! Twoje hasło to: {state.selectedWord}
-            </h3>
+            <h3>GRATULACJE, WYGRAŁEŚ! Twoje hasło to: {state.selectedWord}</h3>
           </>
         )}
         {state.result === "lost" && (
@@ -46,19 +28,13 @@ export const EndGame = () => {
             </h3>
           </>
         )}
-        <button className="default-button" onClick={handlePickNewWord}>
+        <button className="default-button" onClick={handleShuffleWord}>
           Nowe słowo
         </button>
-        <button
-          className="default-button"
-          onClick={handlePickNewCategory}
-        >
+        <button className="default-button" onClick={handlePickNewCategory}>
           Nowa kategoria
         </button>
-        <button
-          className="default-button quit-button"
-          onClick={handleEndGame}
-        >
+        <button className="default-button quit-button" onClick={handleQuitGame}>
           Wyjście z gry
         </button>
       </div>

@@ -1,31 +1,12 @@
-import { useNavigate } from "react-router-dom";
-import { goToCategoriesPage, goToHomePage } from "../config/navigation";
-import { useDispatch } from "react-redux";
-import { continueGame } from "../redux/gameSlice";
-import { replaceWord, resetGame } from "../redux/gameSlice";
+import { useGameActions } from "../hooks/useGameActions";
 
 export const Paused = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const handleContinue = () => {
-    dispatch(continueGame());
-  };
-
-  const shuffleWord = () => {
-    dispatch(replaceWord());
-    dispatch(continueGame())
-  };
-
-  const goToCategories = () => {
-    goToCategoriesPage(navigate);
-    dispatch(resetGame());
-  };
-
-  const quitGame = () => {
-    goToHomePage(navigate);
-    dispatch(resetGame());
-  };
+  const {
+    handleContinue,
+    handlePickNewCategory,
+    handleQuitGame,
+    handleShuffleWord,
+  } = useGameActions();
 
   return (
     <div className="paused-wrapper">
@@ -36,13 +17,13 @@ export const Paused = () => {
         <button className="default-button" onClick={handleContinue}>
           Kontynuuj
         </button>
-        <button className="default-button" onClick={shuffleWord}>
+        <button className="default-button" onClick={handleShuffleWord}>
           Nowe słowo
         </button>
-        <button className="default-button" onClick={goToCategories}>
+        <button className="default-button" onClick={handlePickNewCategory}>
           Nowa kategoria
         </button>
-        <button className="default-button quit-button" onClick={quitGame}>
+        <button className="default-button quit-button" onClick={handleQuitGame}>
           Wyjście z gry
         </button>
       </div>

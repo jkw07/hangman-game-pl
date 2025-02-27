@@ -9,23 +9,30 @@ import { EndGame } from "./EndGame";
 import menu from "../assets/images/icon-menu.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
-import { guessLetter, looseLife, checkStatus, pauseGame } from "../redux/gameSlice";
+import {
+  guessLetter,
+  looseLife,
+  checkStatus,
+  pauseGame,
+} from "../redux/gameSlice";
 
 export const GameBoard = () => {
   const state = useSelector((state: RootState) => state.game);
   const dispatch = useDispatch();
 
-  const onLetterClick = useCallback((letter: string) => {
-    if (state.guessedLetters.includes(letter)) {
-      return;
-    }
-    dispatch(guessLetter(letter));
-    if (!state.selectedWord.includes(letter)) {
-      console.log("looseLife called");
-      dispatch(looseLife());
-    }
-    dispatch(checkStatus());
-  }, [state.guessedLetters, state.selectedWord, dispatch]);
+  const onLetterClick = useCallback(
+    (letter: string) => {
+      if (state.guessedLetters.includes(letter)) {
+        return;
+      }
+      dispatch(guessLetter(letter));
+      if (!state.selectedWord.includes(letter)) {
+        dispatch(looseLife());
+      }
+      dispatch(checkStatus());
+    },
+    [state.guessedLetters, state.selectedWord, dispatch]
+  );
 
   const onLetterClickRef = useRef(onLetterClick);
 
@@ -61,8 +68,8 @@ export const GameBoard = () => {
   }, [state.status]);
 
   const handlePauseGame = () => {
-    dispatch(pauseGame())
-  }
+    dispatch(pauseGame());
+  };
 
   return (
     <>
@@ -70,10 +77,7 @@ export const GameBoard = () => {
       {state.status === "finished" && <EndGame />}
       <div className="page-container">
         <div className="header">
-          <button
-            onClick={handlePauseGame}
-            className="return-button"
-          >
+          <button onClick={handlePauseGame} className="return-button">
             <img src={menu} alt="menu button"></img>
           </button>
           <HealthBar />

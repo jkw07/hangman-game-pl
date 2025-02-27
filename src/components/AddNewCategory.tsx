@@ -1,15 +1,10 @@
-type AddNewCategoryProps = {
-  openNewCategory: () => void;
-  deleteAddedCategories: () => void;
-};
+import { useCategoryActions } from "../hooks/useCategoryActions";
 
-export const AddNewCategory = ({
-  openNewCategory,
-  deleteAddedCategories,
-}: AddNewCategoryProps) => {
+export const AddNewCategory = () => {
+  const { openCategoryForm, deleteAddedCategories } = useCategoryActions();
   return (
     <div className="add-new-category">
-      <button className="default-button quit-button" onClick={openNewCategory}>
+      <button className="default-button quit-button" onClick={openCategoryForm}>
         Dodaj własną kategorię
       </button>
       <button
