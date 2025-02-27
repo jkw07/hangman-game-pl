@@ -1,15 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { goToGameBoard } from "../config/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { pickCategory, pickRandomWord } from "../redux/wordSlice";
-
 import { RootState } from "../redux/store";
+import { pickCategory, pickRandomWord } from "../redux/gameSlice";
+
+import { mergeGameData } from "../utils/dataHelpers";
 
 export const PickCategoryButton = () => {
+  const state = useSelector((state: RootState) => state.data);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const state = useSelector((state: RootState) => state.data);
-  const gameData = [...state.defaultData, ...state.parsedData];
+  const gameData = mergeGameData([...state.defaultData, ...state.parsedData]);
 
   const handleCategoryButtonClick = (category: string, words: string[]) => {
     dispatch(pickCategory({ category, words }));

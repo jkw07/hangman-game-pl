@@ -5,6 +5,7 @@ import { RootState } from "../redux/store";
 import { loadParsedData, saveParsedData } from "../utils/localStorage";
 import { addToParsedData } from "../redux/dataSlice";
 import { useDispatch } from "react-redux";
+import { mergeGameData } from "../utils/dataHelpers";
 
 type AddGameDataProps = {
   closeNewCategory: () => void;
@@ -15,8 +16,8 @@ export const AddGameData = ({ closeNewCategory }: AddGameDataProps) => {
   const state = useSelector((state: RootState) => state.data);
   const [category, setCategory] = useState("");
   const [words, setWords] = useState("");
-  const [categoryError, setCategoryError] = useState(false);
-  const gameData = [...state.defaultData, ...state.parsedData];
+  const [categoryWarning, setCategoryWarning] = useState(false);
+  const gameData = mergeGameData([...state.defaultData, ...state.parsedData]);
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newCategory = e.target.value.trim();
@@ -25,16 +26,16 @@ export const AddGameData = ({ closeNewCategory }: AddGameDataProps) => {
       (item) => item.category.toLowerCase() === newCategory.toLowerCase()
     );
     if (categoryExists) {
-      setCategoryError(true);
+      setCategoryWarning(true);
     } else {
-      setCategoryError(false);
+      setCategoryWarning(false);
     }
   };
 
   const handleSave = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (categoryError || !category.trim()) {
+    if (!category.trim()) {
       return;
     }
 
@@ -48,7 +49,7 @@ export const AddGameData = ({ closeNewCategory }: AddGameDataProps) => {
     saveParsedData(existingData);
     setCategory("");
     setWords("");
-    existingData.forEach((data) => dispatch(addToParsedData(data)));
+    dispatch(addToParsedData(existingData));
     closeNewCategory();
   };
   const allowedCharsRegex = new RegExp(`[^${letters.join("")},\\s]`, "gi");
@@ -73,12 +74,16 @@ export const AddGameData = ({ closeNewCategory }: AddGameDataProps) => {
             onChange={handleCategoryChange}
             required
           />
-          {categoryError && (
+          {categoryWarning && (
             <div className="error-message">
-              Kategoria już istnieje! Wybierz inną
+              Kategoria już istnieje. Wpisane słowa zostaną dodane do
+              istniejącej kategorii.
             </div>
           )}
-          <label>Podaj słowa oddzielone przecinkami:</label>
+          <label>
+            Podaj słowa oddzielone przecinkami. Pamiętaj, że duplikaty słów
+            zostaną usunięte.
+          </label>
           <textarea
             className="input-words"
             value={words}

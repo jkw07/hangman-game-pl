@@ -13,8 +13,8 @@ const dataSlice = createSlice({
     defaultData: defaultData,
   } as DataType,
   reducers: {
-    addToParsedData: (state, action: PayloadAction<GameDataType>) => {
-      state.parsedData.push(action.payload);
+    addToParsedData: (state, action: PayloadAction<GameDataType[]>) => {
+      state.parsedData = action.payload;
     },
     removeParsedData: (state) => {
       state.parsedData = [];

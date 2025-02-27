@@ -7,7 +7,7 @@ type LetterButtonsProps = {
 };
 
 export const LetterButtons = ({ onLetterClick }: LetterButtonsProps) => {
-  const state = useSelector((state: RootState) => state.word);
+  const state = useSelector((state: RootState) => state.game);
 
   return (
     <div className="letters-container">

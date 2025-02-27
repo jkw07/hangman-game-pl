@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { goToCategoriesPage, goToHomePage } from "../config/navigation";
 import { useDispatch } from "react-redux";
 import { continueGame } from "../redux/gameSlice";
-import { replaceWord, resetGame } from "../redux/wordSlice";
+import { replaceWord, resetGame } from "../redux/gameSlice";
 
 export const Paused = () => {
   const dispatch = useDispatch();
@@ -14,6 +14,7 @@ export const Paused = () => {
 
   const shuffleWord = () => {
     dispatch(replaceWord());
+    dispatch(continueGame())
   };
 
   const goToCategories = () => {

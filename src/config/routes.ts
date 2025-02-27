@@ -2,6 +2,6 @@
 export const ROUTES = {
   HOME: "/",
   CATEGORY: "/category",
-  GAME: "/came-board",
+  GAME: "/game-board",
   HOW_TO_PLAY: "/how-to-play",
 }

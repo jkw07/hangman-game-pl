@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useCallback, useRef } from "react";
 
-import { letters } from "./GameDefaultData";
+import { letters } from "../gameData/letters";
 import { LetterButtons } from "./LetterButtons";
 import { SelectedWord } from "./SelectedWord";
 import { Paused } from "./Paused";
@@ -9,66 +9,69 @@ import { EndGame } from "./EndGame";
 import menu from "../assets/images/icon-menu.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
-import { guessLetter, looseLife, checkStatus } from "../redux/wordSlice";
-import { endGame } from "../redux/gameSlice";
+import { guessLetter, looseLife, checkStatus, pauseGame } from "../redux/gameSlice";
 
 export const GameBoard = () => {
-  const wordState = useSelector((state: RootState) => state.word);
-  const gameState = useSelector((state: RootState) => state.game);
+  const state = useSelector((state: RootState) => state.game);
   const dispatch = useDispatch();
 
-  const onLetterClick = (letter: string) => {
-    if (wordState.guessedLetters.includes(letter)) {
+  const onLetterClick = useCallback((letter: string) => {
+    if (state.guessedLetters.includes(letter)) {
       return;
     }
     dispatch(guessLetter(letter));
-    if (!wordState.selectedWord.includes(letter)) {
+    if (!state.selectedWord.includes(letter)) {
+      console.log("looseLife called");
       dispatch(looseLife());
     }
     dispatch(checkStatus());
-  };
+  }, [state.guessedLetters, state.selectedWord, dispatch]);
+
+  const onLetterClickRef = useRef(onLetterClick);
+
+  useEffect(() => {
+    onLetterClickRef.current = onLetterClick;
+  }, [onLetterClick]);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       const pressedKey = event.key.toUpperCase();
       if (
         letters.includes(pressedKey) &&
-        !wordState.guessedLetters.includes(pressedKey)
+        !state.guessedLetters.includes(pressedKey)
       ) {
-        onLetterClick(pressedKey);
+        onLetterClickRef.current(pressedKey);
       }
     };
     document.addEventListener("keydown", handleKeyPress);
     return () => {
       document.removeEventListener("keydown", handleKeyPress);
     };
-  }, [wordState.guessedLetters]);
-
-  useEffect(() => {
-    if (wordState.status !== "none") {
-      dispatch(endGame());
-    }
-  }, [wordState.status]);
+  }, [state.guessedLetters]);
 
   useEffect(() => {
     const pageContainer = document.querySelector(".page-container");
     if (pageContainer) {
-      if (gameState === "paused" || state.hasEnded) {
+      if (state.status === "paused" || state.status === "finished") {
         pageContainer.classList.add("blurred");
       } else {
         pageContainer.classList.remove("blurred");
       }
     }
-  }, [state.isPaused, state.hasEnded]);
+  }, [state.status]);
+
+  const handlePauseGame = () => {
+    dispatch(pauseGame())
+  }
 
   return (
     <>
-      {state.isPaused && <Paused />}
-      {state.hasEnded && <EndGame />}
+      {state.status === "paused" && <Paused />}
+      {state.status === "finished" && <EndGame />}
       <div className="page-container">
         <div className="header">
           <button
-            onClick={() => dispatch({ type: GameActionType.PAUSE })}
+            onClick={handlePauseGame}
             className="return-button"
           >
             <img src={menu} alt="menu button"></img>
@@ -79,7 +82,7 @@ export const GameBoard = () => {
           </h2>
         </div>
         <SelectedWord />
-        {state.gameStatus === GameStatus.Playing && (
+        {state.status === "playing" && (
           <LetterButtons onLetterClick={onLetterClick} />
         )}
       </div>
