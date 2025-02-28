@@ -1,4 +1,4 @@
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter, BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { ROUTES } from "./config/routes";
@@ -8,6 +8,8 @@ import { GameBoard } from "./components/GameBoard";
 import { HowToPlay } from "./components/HowToPlay";
 
 export const App = () => {
+  const Router =
+    process.env.NODE_ENV === "production" ? HashRouter : BrowserRouter;
   return (
     <>
       <Provider store={store}>
