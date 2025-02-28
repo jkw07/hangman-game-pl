@@ -1,6 +1,6 @@
-import { letters } from "../gameData/letters";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import { letters } from "../gameData/letters";
 
 type LetterButtonsProps = {
   onLetterClick: (letter: string) => void;

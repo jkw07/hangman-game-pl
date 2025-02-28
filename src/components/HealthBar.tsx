@@ -1,6 +1,6 @@
-import heart from "../assets/images/icon-heart.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import heart from "../assets/images/icon-heart.svg";
 
 export const HealthBar = () => {
   const state = useSelector((state: RootState) => state.game);

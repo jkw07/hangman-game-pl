@@ -1,13 +1,17 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+
+import { useGameActions } from "../hooks/useGameActions";
+
 import { PickCategoryButton } from "./PickCategoryButton";
-import returnIcon from "../assets/images/icon-back.svg";
 import { AddGameData } from "./AddGameData";
 import { AddNewCategory } from "./AddNewCategory";
-import { useGameActions } from "../hooks/useGameActions";
-import { useCategoryActions } from "../hooks/useCategoryActions";
+
+import returnIcon from "../assets/images/icon-back.svg";
 
 export const CategoryPage = () => {
   const { handleGoToHomePage } = useGameActions();
-  const { isCategoryFormOpen } = useCategoryActions();
+  const state = useSelector((state: RootState) => state.categoryForm);
 
   return (
     <>
@@ -22,7 +26,7 @@ export const CategoryPage = () => {
           <PickCategoryButton />
           <AddNewCategory />
         </div>
-        {isCategoryFormOpen && <AddGameData />}
+        {state.isCategoryFormOpen && <AddGameData />}
       </div>
     </>
   );

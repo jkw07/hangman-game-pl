@@ -1,5 +1,5 @@
-import returnIcon from "../assets/images/icon-back.svg";
 import { useGameActions } from "../hooks/useGameActions";
+import returnIcon from "../assets/images/icon-back.svg";
 
 export const HowToPlay = () => {
   const { handleGoToHomePage } = useGameActions();

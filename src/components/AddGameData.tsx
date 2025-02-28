@@ -2,13 +2,13 @@ import { useCategoryActions } from "../hooks/useCategoryActions";
 
 export const AddGameData = () => {
   const {
-    closeCategoryForm,
     category,
     words,
-    categoryWarning,
+    duplicatedCategoryWarning,
     handleCategoryChange,
     handleSave,
     handleTextareaInput,
+    handleCloseCategoryForm,
   } = useCategoryActions();
 
   return (
@@ -26,7 +26,7 @@ export const AddGameData = () => {
             onChange={handleCategoryChange}
             required
           />
-          {categoryWarning && (
+          {duplicatedCategoryWarning && (
             <div className="error-message">
               Kategoria już istnieje. Wpisane słowa zostaną dodane do
               istniejącej kategorii.
@@ -46,7 +46,10 @@ export const AddGameData = () => {
             <button className="default-button" type="submit">
               Zapisz
             </button>
-            <button className="default-button" onClick={closeCategoryForm}>
+            <button
+              className="default-button"
+              onClick={handleCloseCategoryForm}
+            >
               Wyjdź
             </button>
           </div>

@@ -1,6 +1,6 @@
+import { useGameActions } from "../hooks/useGameActions";
 import logo from "../assets/images/logo.svg";
 import play from "../assets/images/icon-play.svg";
-import { useGameActions } from "../hooks/useGameActions";
 
 export const HomePage = () => {
   const { handlePlay, handleShowRules } = useGameActions();

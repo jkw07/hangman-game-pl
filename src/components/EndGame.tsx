@@ -1,6 +1,6 @@
+import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useGameActions } from "../hooks/useGameActions";
-import { useSelector } from "react-redux";
 
 export const EndGame = () => {
   const state = useSelector((state: RootState) => state.game);

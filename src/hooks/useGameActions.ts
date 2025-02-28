@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { continueGame, pickCategory, pickRandomWord, replaceWord, resetGame, startGame } from "../redux/gameSlice";
+import { continueGame, pauseGame, pickCategory, pickRandomWord, replaceWord, resetGame, startGame } from "../redux/gameSlice";
 import { goToCategoriesPage, goToGameBoard, goToHomePage, goToRulesPage } from "../utils/navigation";
 import { addToParsedData, removeParsedData } from "../redux/dataSlice";
 import { GameDataType } from "../gameData/defaultData";
@@ -9,6 +9,10 @@ import { loadLocalStorage } from "../utils/localStorage";
 export function useGameActions() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const handlePauseGame = () => {
+        dispatch(pauseGame());
+    };
 
     const handleContinue = () => {
         dispatch(continueGame());
@@ -51,5 +55,5 @@ export function useGameActions() {
         goToHomePage(navigate);
     };
 
-    return { handleContinue, handleShuffleWord, handlePickNewCategory, handleQuitGame, handlePickCategory, handlePlay, handleShowRules, handleGoToHomePage};
+    return { handlePauseGame, handleContinue, handleShuffleWord, handlePickNewCategory, handleQuitGame, handlePickCategory, handlePlay, handleShowRules, handleGoToHomePage};
 }

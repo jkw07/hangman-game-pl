@@ -4,18 +4,15 @@ import { clearLocalStorage, updateLocalStorage } from "../utils/localStorage";
 import { useDispatch } from "react-redux";
 import { useDataActions } from "./useDataActions";
 import { filterNewWords } from "../utils/dataHelpers";
+import { openCategoryForm, closeCategoryForm } from "../redux/categoryFormSlice";
 
 export function useCategoryActions() {
     const dispatch = useDispatch();
 
-    const [isCategoryFormOpen, setIsCategoryFormOpen] = useState(false);
+    const [duplicatedCategoryWarning, setDuplicatedCategoryWarning] = useState(false);
     const [category, setCategory] = useState("");
     const [words, setWords] = useState("");
-    const [categoryWarning, setCategoryWarning] = useState(false);
     const { mergedData } = useDataActions();
-
-    const openCategoryForm = () => setIsCategoryFormOpen(true);
-    const closeCategoryForm = () => setIsCategoryFormOpen(false);
 
     const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newCategory = e.target.value;
@@ -23,7 +20,12 @@ export function useCategoryActions() {
         const categoryExists = mergedData.some(
         (item) => item.category.toLowerCase() === newCategory.toLowerCase()
         );
-        setCategoryWarning(categoryExists);
+        setDuplicatedCategoryWarning(categoryExists);
+    };
+
+    const handleTextareaInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const filteredValue = filterNewWords(e.target.value);
+        setWords(filteredValue);
     };
 
     const handleSave = (event: React.FormEvent<HTMLFormElement>) => {
@@ -34,22 +36,24 @@ export function useCategoryActions() {
         }
 
         const updatedCategories = updateLocalStorage(category, words);
-        setCategory("");
-        setWords("");
         dispatch(addToParsedData(updatedCategories));
-        closeCategoryForm();
+        handleClearForm();
+        handleCloseCategoryForm();
     };
 
-    const handleTextareaInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const filteredValue = filterNewWords(e.target.value);
-        setWords(filteredValue);
-    };
+    const handleClearForm = () => {
+        setCategory("");
+        setWords("");
+    }
 
     const deleteAddedCategories = () => {
         clearLocalStorage();
         dispatch(removeParsedData());
       };
-      return {isCategoryFormOpen, openCategoryForm, closeCategoryForm,
-        category, setCategory, words, setWords, categoryWarning,
-        handleCategoryChange, handleSave, handleTextareaInput, deleteAddedCategories}
+
+    const handleCloseCategoryForm = () => dispatch(closeCategoryForm());
+    const handleOpenCategoryForm = () => dispatch(openCategoryForm())
+      return {
+        category, setCategory, words, setWords,
+        handleCategoryChange, handleSave, handleTextareaInput, deleteAddedCategories, handleCloseCategoryForm, handleOpenCategoryForm, duplicatedCategoryWarning}
 }
