@@ -14,7 +14,7 @@ export const App = () => {
     <>
       <Provider store={store}>
         <div className="App">
-          <Router basename={process.env.PUBLIC_URL}>
+          <Router>
             <Routes>
               <Route path={ROUTES.HOME} element={<HomePage />} />
               <Route path={ROUTES.CATEGORY} element={<CategoryPage />} />
@@ -27,3 +27,5 @@ export const App = () => {
     </>
   );
 };
+
+//router basename={process.env.PUBLIC_URL}
