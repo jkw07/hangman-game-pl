@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/hangman-game-pl/static/css/main.af864746.css",
-    "main.js": "/hangman-game-pl/static/js/main.05c32d30.js",
+    "main.js": "/hangman-game-pl/static/js/main.a6226501.js",
     "static/media/MouseMemoirs-Regular.ttf": "/hangman-game-pl/static/media/MouseMemoirs-Regular.7f2e3f49a17c1e291d24.ttf",
     "static/media/logo.svg": "/hangman-game-pl/static/media/logo.5dde9e376c0ec414779242be5ad0be1c.svg",
     "static/media/background-desktop.svg": "/hangman-game-pl/static/media/background-desktop.849f782bdb51c86e832c.svg",
@@ -13,10 +13,10 @@
     "static/media/icon-back.svg": "/hangman-game-pl/static/media/icon-back.b1f9e10fbb9948dba457480d2a446eac.svg",
     "static/media/icon-menu.svg": "/hangman-game-pl/static/media/icon-menu.1354a6dc6c03e6ec299765532218218a.svg",
     "main.af864746.css.map": "/hangman-game-pl/static/css/main.af864746.css.map",
-    "main.05c32d30.js.map": "/hangman-game-pl/static/js/main.05c32d30.js.map"
+    "main.a6226501.js.map": "/hangman-game-pl/static/js/main.a6226501.js.map"
   },
   "entrypoints": [
     "static/css/main.af864746.css",
-    "static/js/main.05c32d30.js"
+    "static/js/main.a6226501.js"
   ]
 }
