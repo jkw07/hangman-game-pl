@@ -64,7 +64,7 @@ const gameSlice = createSlice({
     },
     checkStatus: (state) => {
       if (!state.selectedWord) return;
-      const wordLetters = new Set(state.selectedWord.split(""));
+      const wordLetters = new Set(state.selectedWord.replace(/\s+/g, '').split(""));
       const guessedCorrectly = [...wordLetters].every((letter) =>
         state.guessedLetters.includes(letter),
       );
